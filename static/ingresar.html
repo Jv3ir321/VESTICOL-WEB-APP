@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Crear cuenta• Vesticol Colombia</title>
+  <link rel="icon" href="logo.jpg" type="image/jpg">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-image: url("imagenes/tiendanegra.jpg"); 
+      background-size: cover;   
+      background-position: center;
+      background-attachment: fixed; 
+    }
+    nav {
+      background-color: #0A0A0A;
+      overflow: hidden;
+    }
+    nav ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      display: flex;
+      align-items: center;
+    }
+    nav ul li {
+      position: relative;
+    }
+    nav ul li a {
+      display: block;
+      padding: 14px 20px;
+      text-decoration: none;
+      color: white;
+    }
+    nav ul li a:hover {
+      background-color: #575757;
+    }
+    nav ul li.logo {
+      margin-right: auto;
+    }
+    nav ul li.logo img {
+      height: 80px; 
+      margin: 5px 15px;
+    }
+    .formulario {
+      background-color: white; 
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 600px;
+      margin: 40px auto;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    }
+    label {
+      display: block;
+      margin-top: 15px;
+    }
+    input, select {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border-radius: 4px;
+      border: 1px solid #bebebe;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #2980b9;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: hsl(204, 64%, 34%);
+    }
+    footer {
+      background-color: #000;
+      color: white;
+      text-align: center;
+      padding: 15px 0;
+      margin-top: 40px;
+    }
+    .mensaje {
+      margin-top: 15px;
+      font-size: 16px;
+      font-weight: bold;
+      color: green;
+    }
+    .error {
+      color: red;
+      font-size: 16px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  
+  <nav>
+    <ul>
+      <li class="logo">
+        <a href="inicio.html">
+          <img src="logo.jpg" alt="Logotipo Vesticol">
+        </a>
+      </li>
+      <li><a href="sesionhombre.html">Hombre</a></li>
+      <li><a href="sesionmujer.html">Mujer</a></li>
+      <li><a href="carrito.html" id="carritoLink">🛒 Carrito</a></li>
+      <li><a href="atencionalcliente.html">🎧Ayuda</a></li>
+      <li><a href="ingresar.html">Registrar</a></li>
+    </ul>
+  </nav>
+
+  
+  <div class="formulario">
+    <h2>CREAR CUENTA</h2>
+    <form action="" method="POST">
+      <label for="correo">Correo electrónico:</label>
+      <input type="email" name="correo" required>
+
+      <label for="contraseña">Contraseña:</label>
+      <input type="password" name="contraseña" required>
+
+      <label for="nombre">Nombre:</label>
+      <input type="text" name="nombre" required>
+
+      <label for="apellido">Apellido:</label>
+      <input type="text" name="apellido" required>
+    
+      <label for="documento">Documento:</label>
+      <div style="display: flex; gap: 10px; align-items: center;">
+        <select name="documento_tipo" required>
+          <option value="Cédula de ciudadanía">Cédula de ciudadanía</option>
+          <option value="Cédula extranjera">Cédula extranjera</option> 
+          <option value="Tarjeta de identidad">Tarjeta de identidad</option> 
+        </select>
+        <input type="text" name="documento_numero" placeholder="Número" required pattern="[0-9]+">
+      </div>
+
+      <label for="fechaNacimiento">Fecha de Nacimiento:</label>
+      <input type="date" name="fechaNacimiento" required>
+
+      <button type="submit">Crear</button>
+    </form> 
+
+    
+    <?php if ($mensaje != ""): ?>
+      <p class="<?php echo (strpos($mensaje, 'Error') !== false) ? 'error' : 'mensaje'; ?>">
+        <?php echo $mensaje; ?>
+      </p>
+    <?php endif; ?>
+  </div>
+
+  <footer>
+    <p>© 2025 Vesticol Colombia — Todos los derechos reservados.</p>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Ropa, zapatos y accesorios para mujer • Vesticol Colombia</title>
+<link rel="icon" href="logo.jpg" type="image/jpg">
+<style>
+
+nav {
+  background-color: #000000;
+  overflow: hidden;
+}
+nav ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  align-items: center;
+}
+nav ul li a {
+  display: block;
+  padding: 14px 20px;
+  text-decoration: none;
+  color: white;
+}
+nav ul li a:hover { background-color: #575757; }
+nav ul li.logo { margin-right: auto; }
+nav ul li.logo img { height: 80px; margin: 5px 15px; }
+
+
+body { margin:0; font-family: Arial, sans-serif; background:#f4f4f4; }
+
+
+.wrap { display:flex; min-height:calc(100vh - 56px); }
+
+
+.sidebar { width:220px; background:#111; color:#fff; padding:20px; }
+.sidebar h3 { margin-top:0; }
+.sidebar ul { list-style:none; padding:0; margin:0; }
+.sidebar li { margin:12px 0; }
+.sidebar a { color:#fff; text-decoration:none; cursor:pointer; }
+.sidebar a:hover { text-decoration:underline; }
+
+
+.main { flex:1; padding:20px; display:grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap:20px; align-items:start; }
+
+
+.card { background:#fff; border-radius:10px; overflow:hidden; box-shadow:0 4px 10px rgba(0, 0, 0, 0.08); text-align:center; padding-bottom:12px; }
+.card img { width:100%; height:180px; object-fit:cover; display:block; }
+.card h4 { margin:10px; font-size:16px; }
+.price { color:#0a0; font-weight:700; margin-bottom:8px; }
+.card button { background:#000000; color:#fff; border:10; padding:8px 12px; border-radius:6px; cursor:pointer; }
+.card button:hover { background:#333; }
+
+footer { background-color: #000000; color: #fff; text-align: center; padding: 15px 0; font-family: Arial, sans-serif; margin-top: 40px; }
+</style>
+</head>
+<body>
+
+<nav>
+  <ul>
+    <li class="logo"><a href="inicio.html"><img src="logo.jpg" alt="Logotipo Vesticol"></a></li>
+    <li><a href="sesionhombre.html">Hombre</a></li>
+    <li><a href="sesionmujer.html">Mujer</a></li>
+    <li><a href="carrito.html">🛒 Carrito</a></li>
+    <li><a href="atencionalcliente.html">🎧Ayuda</a></li>
+    <li><a href="ingresar.html">Registrar</a></li>
+  </ul>
+</nav>
+
+<header>
+  <strong>• MODA MASCULINA •</strong>
+</header>
+
+<div class="wrap">
+  <aside class="sidebar">
+    <h3>Categorías</h3>
+    <ul>
+      <li><a onclick="filtrarCategoria('Calzado')">Calzado</a></li>
+      <li><a onclick="filtrarCategoria('Ropa')">Ropa</a></li>
+      <li><a onclick="filtrarCategoria('Accesorios')">Accesorios</a></li>
+      <li><a onclick="filtrarCategoria('Todos')">Todos</a></li>
+    </ul>
+  </aside>
+
+  <main class="main" id="productosMain">
+    
+    <div class="card" data-id="h1" data-nombre="Camiseta Unicolor Color Blanco optico" data-genero="Masculino" data-categoria="Ropa" data-descripcion="Camiseta para Hombre, Unicolor con Cuello redondo. Color Blanco optico. Estampado Unicolor. Composición: 96% algodon, 4% elastano * El modelo mide 1,90m y usa una prenda talla M. Tener una gran cantidad de camisetas a mano es clave cuando se trata de tu guardarropa." data-precio="44900" data-imagen="imagenes/sueterquestblanco.jpg">
+      <img src="imagenes/sueterquestblanco.jpg" alt="Camiseta Básica Hombre">
+      <h4>Camiseta Unicolor Color Blanco optico Quest</h4>
+      <div class="price">$44.900 COP</div>
+      <button onclick="openDetail(this.closest('.card'))">Ver detalles</button>
+    </div>
+
+    <div class="card" data-id="h2" data-nombre="Pantalón Clasico Brahma" data-genero="Masculino" data-categoria="Ropa" data-descripcion="Pantalón cómodo para ocasiones casuales marca Brahma color cafe, compuesto por un 98% de algodon y un 2% de elastano." data-precio="269900" data-imagen="imagenes/pantalonbrahma.jpg">
+      <img src="imagenes/pantalonbrahma.jpg" alt="Pantalón Clasico Brahma">
+      <h4>Pantalón Clásico Brahma</h4>
+      <div class="price">$269.900 COP</div>
+      <button onclick="openDetail(this.closest('.card'))">Ver detalles</button>
+    </div>
+
+    <div class="card" data-id="h3" data-nombre="Nike Max Aura 7" data-genero="Masculino" data-categoria="Calzado" data-descripcion="Para los Max Aura 7, tomamos los éxitos de los AJ10 y AJ11 y diseñamos una combinación moderna, perfecta para el uso diario. Los detalles ondulados junto a las agujetas se inspiran directamente de los AJ10. ¿Y la protección antilodo de charol y la goma translúcida de la suela? Son un guiño a los AJ11." data-precio="754950" data-imagen="imagenes/Nike Max Aura 7.jpg">
+      <img src="imagenes/Nike Max Aura 7.jpg" alt="Zapatos Deportivos Hombre">
+      <h4>Nike Max Aura 7</h4>
+      <div class="price">$754.950 COP</div>
+      <button onclick="openDetail(this.closest('.card'))">Ver detalles</button>
+    </div>
+
+    <div class="card" data-id="h4" data-nombre="Invicta Venom 45730" data-genero="Masculino" data-categoria="Accesorios" data-descripcion="Reloj invicta 45730 venom para hombres, tamaño de la caja 50 mm de acero inoxidable, tamaño del pulso 182 mm de acero inoxidable, color acero, pulso de 182 mm, resistencia al agua hasta 100 metros" data-precio="664500" data-imagen="imagenes/INVICTA-VENOM.jpg">
+      <img src="imagenes/INVICTA-VENOM.jpg" alt="Invicta Venom 45730">
+      <h4>Invicta Venom 45730</h4>
+      <div class="price">$664.500 COP</div>
+      <button onclick="openDetail(this.closest('.card'))">Ver detalles</button>
+    </div>
+
+  </main>
+</div>
+
+<footer>
+  <p>© 2025 Vesticol Colombia — Todos los derechos reservados.</p>
+</footer>
+
+<script>
+
+function openDetail(cardEl){
+  const product = {
+    id: cardEl.dataset.id,
+    nombre: cardEl.dataset.nombre,
+    genero: cardEl.dataset.genero,
+    categoria: cardEl.dataset.categoria,
+    descripcion: cardEl.dataset.descripcion,
+    precio: cardEl.dataset.precio,
+    imagen: cardEl.dataset.imagen
+  };
+  localStorage.setItem('productoDetalle', JSON.stringify(product));
+  window.location.href = 'detalleproducto.html';
+}
+
+
+function filtrarCategoria(categoria){
+  const productos = document.querySelectorAll('.main .card');
+  productos.forEach(card => {
+    if(categoria === 'Todos' || card.dataset.categoria === categoria){
+      card.style.display = 'block';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+}
+</script>
+
+</body>
+</html>

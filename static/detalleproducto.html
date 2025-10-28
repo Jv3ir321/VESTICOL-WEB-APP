@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Detalle del Producto • Vesticol Colombia</title>
+<link rel="icon" href="logo.jpg" type="image/jpg">
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background-color: #ffffff;
+  }
+  nav {
+    background-color: #0A0A0A;
+    overflow: hidden;
+  }
+  nav ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    align-items: center;
+  }
+  nav ul li a {
+    display: block;
+    padding: 14px 20px;
+    text-decoration: none;
+    color: white;
+  }
+  nav ul li a:hover {
+    background-color: #575757;
+  }
+  nav ul li.logo {
+    margin-right: auto;
+  }
+  nav ul li.logo img {
+    height: 80px;
+    margin: 5px 15px;
+  }
+  footer {
+    background-color: #000;
+    color: white;
+    text-align: center;
+    padding: 15px 0;
+    margin-top: 40px;
+  }
+  .container {
+    display: flex;
+    padding: 40px;
+    gap: 40px;
+    flex-wrap: wrap;
+  }
+  .imagen-producto {
+    flex: 1;
+    min-width: 400px;
+    max-width: 600px;
+    height: 500px; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    background-color: #f0f0f0; 
+  }
+
+  .imagen-producto img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
+    border-radius: 8px;
+  }
+
+  .producto-info {
+    flex: 1;
+    min-width: 300px;
+    max-width: 600px;
+    background-color: #000000;
+    color: #fff;
+    padding: 40px 30px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    line-height: 1.6;
+    height: fit-content;
+  }
+  .producto-info h2 {
+    margin: 0 0 20px 0;
+    font-size: 2em;
+    letter-spacing: 1px;
+  }
+  .producto-info p {
+    margin: 10px 0;
+    font-size: 1em;
+    letter-spacing: 0.5px;
+  }
+  .envio {
+    margin: 20px 0;
+    font-weight: bold;
+    color: #249924;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.1em;
+  }
+  .btn-carrito {
+    padding: 15px;
+    background-color: #3483fa;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  .btn-carrito:hover {
+    background-color: #2968c8;
+  }
+  .tallas {
+    margin: 20px 0;
+  }
+  .tallas button {
+    padding: 10px 15px;
+    margin: 5px;
+    border: 2px solid #fff;
+    background: transparent;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  .tallas button.active {
+    background: #3483fa;
+    border-color: #3483fa;
+  }
+</style>
+</head>
+<body>
+<nav>
+  <ul>
+    <li class="logo">
+      <a href="inicio.html"><img src="logo.jpg" alt="Logotipo Vesticol"></a>
+    </li>
+    <li><a href="sesionhombre.html">Hombre</a></li>
+    <li><a href="sesionmujer.html">Mujer</a></li>
+    <li><a href="carrito.html">🛒 Carrito</a></li>
+    <li><a href="atencionalcliente.html">🎧Ayuda</a></li>
+    <li><a href="ingresar.html">Registrar</a></li>
+  </ul>
+</nav>
+
+<div class="container">
+  <div class="imagen-producto">
+    <img id="imagenProducto" src="" alt="Producto">
+  </div>
+  <div class="producto-info">
+    <div>
+      <h2 id="nombreProducto"></h2>
+      <p id="descripcionProducto"></p>
+      <p>Precio: $<span id="precioProducto"></span> COP</p>
+      <p class="envio">🚚 Envío: Gratis</p>
+      <div class="tallas">
+        <p>Selecciona la talla:</p>
+        <button onclick="seleccionarTalla(this)">38</button>
+        <button onclick="seleccionarTalla(this)">39</button>
+        <button onclick="seleccionarTalla(this)">40</button>
+        <button onclick="seleccionarTalla(this)">41</button>
+        <button onclick="seleccionarTalla(this)">42</button>
+        <button onclick="seleccionarTalla(this)">43</button>
+      </div>
+    </div>
+    <button class="btn-carrito" id="agregarCarrito">Agregar al carrito</button>
+  </div>
+</div>
+
+<script>
+  let tallaSeleccionada = null;
+
+  function seleccionarTalla(btn) {
+    document.querySelectorAll('.tallas button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    tallaSeleccionada = btn.textContent;
+  }
+
+  const product = JSON.parse(localStorage.getItem('productoDetalle'));
+
+  if(product) {
+    document.getElementById('nombreProducto').textContent = product.nombre;
+    document.getElementById('descripcionProducto').textContent = product.descripcion;
+    document.getElementById('precioProducto').textContent = product.precio.toLocaleString();
+    document.getElementById('imagenProducto').src = product.imagen;
+
+    document.getElementById('agregarCarrito').addEventListener('click', () => {
+      if(!tallaSeleccionada){
+        Swal.fire({
+          icon: "warning",
+          title: "Selecciona una talla",
+          text: "Debes elegir una talla antes de agregar al carrito el producto.",
+          confirmButtonText: "Aceptar"
+        });
+        return;
+      }
+
+      let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+      let item = carrito.find(p => p.nombre === product.nombre && p.talla === tallaSeleccionada);
+
+      if(item) {
+        item.cantidad += 1; 
+      } else {
+        carrito.push({...product, cantidad: 1, talla: tallaSeleccionada}); 
+      }
+
+      localStorage.setItem('carrito', JSON.stringify(carrito));
+
+      Swal.fire({
+        icon: "success",
+        title: "¡Producto agregado!",
+        text: "El producto fue agregado exitosamente al carrito.",
+        confirmButtonText: "Ir al carrito"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = "carrito.html";
+        }
+      });
+    });
+  } else {
+    document.querySelector('.container').innerHTML = "<p>No se encontró el producto.</p>";
+  }
+</script>
+
+<footer>
+  <p>© 2025 Vesticol Colombia — Todos los derechos reservados.</p>
+</footer>
+</body>
+</html>

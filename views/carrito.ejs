@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Carrito de compras • Vesticol Colombia </title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #ffffff;
+        margin: 0;
+        padding: 0;
+    }
+
+    nav {
+        background-color: #0A0A0A;
+        overflow: hidden;
+    }
+
+    nav ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        display: flex;
+        align-items: center;
+    }
+
+    nav ul li {
+        position: relative;
+    }
+
+    nav ul li a {
+        display: block;
+        padding: 14px 20px;
+        text-decoration: none;
+        color: white;
+    }
+
+    nav ul li a:hover {
+        background-color: #575757;
+    }
+
+    nav ul li.logo {
+        margin-right: auto;
+    }
+
+    nav ul li.logo img {
+        height: 80px;
+        margin: 5px 15px;
+    }
+
+    header h1 {
+        margin: 0;
+        font-size: 1.5em;
+        padding: 20px;
+    }
+
+    .container {
+        display: flex;
+        gap: 20px;
+        padding: 20px;
+        flex-wrap: wrap;
+    }
+
+    .carrito-productos {
+        flex: 3;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        min-height: 200px;
+    }
+
+    .producto {
+        display: flex;
+        align-items: center;
+        border-bottom: 1px solid #ddd;
+        padding: 10px 0;
+    }
+
+    .producto img {
+        width: 80px;
+        height: auto;
+        margin-right: 15px;
+        cursor: pointer;
+    }
+
+    .producto-info {
+        flex: 1;
+    }
+
+    .producto-info h3 {
+        margin: 0 0 5px 0;
+        font-size: 1em;
+        cursor: pointer;
+        color: #000;
+    }
+
+    .producto-info p {
+        margin: 5px 0;
+        color: #555;
+        font-size: 0.9em;
+    }
+
+    .cantidad, .talla {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        margin-top: 5px;
+    }
+
+    .cantidad input {
+        width: 40px;
+        text-align: center;
+    }
+
+    .precio {
+        font-weight: bold;
+        margin-left: 20px;
+    }
+
+    .resumen {
+        font-weight: bold;
+        flex: 1;
+        background-color: #ffffff; 
+        padding: 20px;
+        border: 1px solid #cfcfcf; 
+        border-radius: 5px;
+        height: fit-content;
+    }
+
+    .resumen h2 {
+        margin-top: 0;
+    }
+
+    .resumen .total {
+        font-size: 1.2em;
+        font-weight: bold;
+        margin: 10px 0;
+    }
+
+    .resumen button {
+        width: 100%;
+        padding: 10px;
+        background-color: #3483fa;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .resumen button:hover {
+        background-color: #2968c8;
+    }
+
+    .eliminar {
+        color: rgb(0, 0, 0);
+        cursor: pointer;
+        font-size: 0.9em;
+    }
+    
+    footer {
+        background-color: #000;
+        color: white;
+        text-align: center;
+        padding: 15px 0;
+        margin-top: 100px;
+    }
+
+    .mensaje-vacio {
+        text-align: center;
+        font-size: 1.1em;
+        color: #555;
+        padding: 40px;
+    }
+</style>
+</head>
+<body>
+
+<nav>
+    <ul>
+      <li class="logo">
+        <a href="/">
+          <img src="/logo.jpg" alt="Logotipo Vesticol">
+        </a>
+      </li>
+      <li><a href="/sesionhombre">Hombre</a></li>
+      <li><a href="/sesionmujer">Mujer</a></li>
+      <li><a href="/carrito" id="carritoLink">🛒 Carrito</a></li>
+      <li><a href="/atencionalcliente">🎧Ayuda</a></li>
+       <% if (!datos || !datos.login) { %>
+      <li><a href="/ingresar">Registrar</a></li>
+      <li><a href="/ingresar/iniciarsesion">Iniciar Sesión</a></li>
+      <% } else { %>
+      <li><a href="/perfil">Bienvenido, <%= datos.usuario %></a></li>
+      <form action="/cerrarsesion" method="POST" style="display:inline;">
+        <button type="submit" style="background:none;border:none;color:white;cursor:pointer;padding:14px 20px;font-size:16px;">Cerrar Sesión</button>
+      </form>
+      <% } %>
+    </ul>
+</nav>
+
+<header>
+    <h1>Carrito de Compras</h1>
+</header>
+
+<div class="container">
+    <div class="carrito-productos" id="productosContainer"></div>
+
+    <div class="resumen">
+        <h2>Resumen de compra</h2>
+        <p>Productos: <span id="cantidadProductos">0</span></p>
+        <p>Total: <span class="total" id="totalCompra">$0</span></p>
+        <button>Continuar compra</button>
+    </div>
+</div>
+
+<script>
+function agregarAlCarrito(productoNuevo) {
+    let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+    
+    let existente = carrito.find(p => p.nombre === productoNuevo.nombre && p.talla === productoNuevo.talla);
+
+    if (existente) {
+        existente.cantidad += productoNuevo.cantidad;
+    } else {
+        carrito.push(productoNuevo);
+    }
+
+    localStorage.setItem('carrito', JSON.stringify(carrito));
+    cargarCarrito();
+}
+
+function cargarCarrito() {
+    const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+    const container = document.getElementById('productosContainer');
+    container.innerHTML = '';
+
+    if (carrito.length === 0) {
+        container.innerHTML = `<p class="mensaje-vacio">No hay productos en el carrito de compras</p>`;
+        document.getElementById('cantidadProductos').textContent = 0;
+        document.getElementById('totalCompra').textContent = "$0";
+        return;
+    }
+
+    carrito.forEach((producto, index) => {
+        const div = document.createElement('div');
+        div.classList.add('producto');
+        div.innerHTML = `
+            <img src="${producto.imagenes ? producto.imagenes[0] : producto.imagen}" 
+                 alt="${producto.nombre}" class="producto-click" data-index="${index}">
+            <div class="producto-info">
+                <h3 class="producto-click" data-index="${index}">${producto.nombre}</h3>
+                <p class="eliminar" data-index="${index}">Eliminar</p>
+                <div class="cantidad">
+                    Cantidad: 
+                    <input type="number" value="${producto.cantidad}" min="1" data-index="${index}">
+                </div>
+                <div class="talla">
+                    Talla: 
+                    <select data-index="${index}">
+                        <option ${producto.talla==="38"?"selected":""}>38</option>
+                        <option ${producto.talla==="39"?"selected":""}>39</option>
+                        <option ${producto.talla==="40"?"selected":""}>40</option>
+                        <option ${producto.talla==="41"?"selected":""}>41</option>
+                        <option ${producto.talla==="42"?"selected":""}>42</option>
+                        <option ${producto.talla==="43"?"selected":""}>43</option>
+                    </select>
+                </div>
+            </div>
+            <div class="precio" data-precio="${producto.precio}">$${producto.precio.toLocaleString()}</div>
+        `;
+        container.appendChild(div);
+    });
+
+    actualizarPrecios();
+    agregarEventos();
+}
+
+function actualizarPrecios() {
+    const productos = document.querySelectorAll('.producto');
+    let total = 0;
+    let cantidadTotal = 0;
+    const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+
+    productos.forEach((producto, index) => {
+        const precioDiv = producto.querySelector('.precio');
+        const inputCantidad = producto.querySelector('input[type="number"]');
+        const selectTalla = producto.querySelector('select');
+        const precioBase = parseInt(precioDiv.getAttribute('data-precio'));
+        const cantidad = parseInt(inputCantidad.value);
+        const precioFinal = precioBase * cantidad;
+        precioDiv.textContent = `$${precioFinal.toLocaleString()}`;
+        total += precioFinal;
+        cantidadTotal += cantidad;
+        carrito[index].cantidad = cantidad;
+        carrito[index].talla = selectTalla.value;
+    });
+
+    document.getElementById('cantidadProductos').textContent = cantidadTotal;
+    document.getElementById('totalCompra').textContent = `$${total.toLocaleString()}`;
+    localStorage.setItem('carrito', JSON.stringify(carrito));
+}
+
+function agregarEventos() {
+    const inputs = document.querySelectorAll('.cantidad input');
+    inputs.forEach(input => {
+        input.addEventListener('change', actualizarPrecios);
+    });
+
+    const selects = document.querySelectorAll('.talla select');
+    selects.forEach(select => {
+        select.addEventListener('change', actualizarPrecios);
+    });
+
+    const eliminarBtns = document.querySelectorAll('.eliminar');
+    eliminarBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const index = btn.getAttribute('data-index');
+            let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+            carrito.splice(index, 1);
+            localStorage.setItem('carrito', JSON.stringify(carrito));
+            cargarCarrito();
+        });
+    });
+
+    const productosClick = document.querySelectorAll('.producto-click');
+    productosClick.forEach(el => {
+        el.addEventListener('click', () => {
+            const index = el.getAttribute('data-index');
+            const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+            const producto = carrito[index];
+            localStorage.setItem('productoDetalle', JSON.stringify(producto));
+            window.location.href = "detalleproducto.html";
+        });
+    });
+}
+
+cargarCarrito();
+</script>
+
+<footer>
+  <p>© 2025 Vesticol Colombia — Todos los derechos reservados.</p>
+</footer>
+</body>
+</html>

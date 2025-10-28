@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Ropa, zapatos y accesorios para mujer • Vesticol Colombia</title>
+<link rel="icon" href="logo.jpg" type="image/jpg">
+<style>
+
+nav {
+  background-color: #0A0A0A;
+  overflow: hidden;
+}
+nav ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  align-items: center;
+}
+nav ul li a {
+  display: block;
+  padding: 14px 20px;
+  text-decoration: none;
+  color: white;
+}
+nav ul li a:hover { background-color: #575757; }
+nav ul li.logo { margin-right: auto; }
+nav ul li.logo img { height: 80px; margin: 5px 15px; }
+
+
+body { margin:0; font-family: Arial, sans-serif; background:#f4f4f4; }
+
+
+.wrap { display:flex; min-height:calc(100vh - 56px); }
+
+
+.sidebar { width:220px; background:#111; color:#fff; padding:20px; }
+.sidebar h3 { margin-top:0; }
+.sidebar ul { list-style:none; padding:0; margin:0; }
+.sidebar li { margin:12px 0; }
+.sidebar a { color:#fff; text-decoration:none; cursor:pointer; }
+.sidebar a:hover { text-decoration:underline; }
+
+
+.main { flex:1; padding:20px; display:grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap:20px; align-items:start; }
+
+
+.card { background:#fff; border-radius:10px; overflow:hidden; box-shadow:0 4px 10px rgba(0,0,0,0.08); text-align:center; padding-bottom:12px; }
+.card img { width:100%; height:180px; object-fit:cover; display:block; }
+.card h4 { margin:10px; font-size:16px; }
+.price { color:#0a0; font-weight:700; margin-bottom:8px; }
+.card button { background:#0A0A0A; color:#fff; border:0; padding:8px 12px; border-radius:6px; cursor:pointer; }
+.card button:hover { background:#333; }
+
+footer { background-color: #000; color: #fff; text-align: center; padding: 15px 0; font-family: Arial, sans-serif; margin-top: 40px; }
+</style>
+</head>
+<body>
+
+<nav>
+  <ul>
+    <li class="logo"><a href="inicio.html"><img src="logo.jpg" alt="Logotipo Vesticol"></a></li>
+    <li><a href="sesionhombre.html">Hombre</a></li>
+    <li><a href="sesionmujer.html">Mujer</a></li>
+    <li><a href="carrito.html">🛒 Carrito</a></li>
+    <li><a href="atencionalcliente.html">🎧Ayuda</a></li>
+    <li><a href="ingresar.html">Registrar</a></li>
+  </ul>
+</nav>
+
+<header>
+  <strong>• MODA FEMENINA •</strong>
+</header>
+
+<div class="wrap">
+  <aside class="sidebar">
+    <h3>Categorías</h3>
+    <ul>
+      <li><a onclick="filtrarCategoria('Calzado')">Calzado</a></li>
+      <li><a onclick="filtrarCategoria('Ropa')">Ropa</a></li>
+      <li><a onclick="filtrarCategoria('Accesorios')">Accesorios</a></li>
+      <li><a onclick="filtrarCategoria('Todos')">Todos</a></li>
+    </ul>
+  </aside>
+
+  <main class="main" id="productosMain">
+    
+    <div class="card" data-id="h1" data-nombre="Camisa con encaje negra" data-genero="Femenino" data-categoria="Ropa" data-descripcion="Cómoda y fresca para ser tu compañera ideal los días en donde quieras resaltar con sobriedad. Llévala con accesorios a tono para un contraste único y moderno." data-precio="77950" data-imagen="imagenes/camisamujer.jpg">
+      <img src="imagenes/camisamujer.jpg" alt="Camisa con encaje negra">
+      <h4>Camisa con encaje negra para mujer</h4>
+      <div class="price">$77.950 COP</div>
+      <button onclick="openDetail(this.closest('.card'))">Ver detalles</button>
+    </div>
+
+    <div class="card" data-id="h2" data-nombre="Pantalón palazzo tiro alto negro con bota ancha" data-genero="Femenino" data-categoria="Ropa" data-descripcion="Pantalón para mujer tipo palazzo negro cuenta con tiro alto, bota ancha, venas decorativas en frente, pretina con botón visible y un fit ligeramente holgado en el cuerpo. Lleva un look estilizado combinando esta prenda con blusas o camisetas crop top. ¡Serás la inspiración de los demás!" data-precio="89900" data-imagen="imagenes/pantalonkoajmujer.jpg">
+      <img src="imagenes/pantalonkoajmujer.jpg" alt="Pantalón palazzo tiro alto negro con bota ancha">
+      <h4>Pantalón palazzo tiro alto negro con bota ancha</h4>
+      <div class="price">$89.000 COP</div>
+      <button onclick="openDetail(this.closest('.card'))">Ver detalles</button>
+    </div>
+
+    <div class="card" data-id="h3" data-nombre="Tenis Samba OG" data-genero="Femenino" data-categoria="Calzado" data-descripcion="Nacidos en las canchas de fútbol, los Samba son un ícono atemporal de la moda urbana. Esta silueta se mantiene fiel a su legado con un discreto y elegante exterior de cuero suave, revestimientos de gamuza y una suela de caucho natural, convirtiéndose en un par indispensable para cualquier armario." data-precio="599950" data-imagen="imagenes/tenis.samba.mujer.jpg">
+      <img src="imagenes/tenis.samba.mujer.jpg" alt="Tenis Samba OG">
+      <h4>Zapatos Tenis Samba OG</h4>
+      <div class="price">$599.950 COP</div>
+      <button onclick="openDetail(this.closest('.card'))">Ver detalles</button>
+    </div>
+
+    <div class="card" data-id="h4" data-nombre="Marquee blanco Velez" data-genero="Femenino" data-categoria="Accesorios" data-descripcion="Un diseño sofisticado que exalta la herencia artesanal del cuero en cada detalle. Esta bandolera tipo sobre destaca por su versatilidad, combinando acabados folia y tonos neutros que realzan su encanto atemporal. Con un bolsillo interno con cremallera, manija decorativa y cierre magnético, es una pieza práctica y elegante que fusiona tradición y modernidad en un accesorio indispensable." data-precio="739900" data-imagen="imagenes/Marquee-blanco.jpg">
+      <img src="imagenes/Marquee-blanco.jpg" alt="Marquee blanco Velez">
+      <h4>Marquee blanco Velez</h4>
+      <div class="price">$739.900 COP</div>
+      <button onclick="openDetail(this.closest('.card'))">Ver detalles</button>
+    </div>
+
+  </main>
+</div>
+
+<footer>
+  <p>© 2025 Vesticol Colombia — Todos los derechos reservados.</p>
+</footer>
+
+<script>
+
+function openDetail(cardEl){
+  const product = {
+    id: cardEl.dataset.id,
+    nombre: cardEl.dataset.nombre,
+    genero: cardEl.dataset.genero,
+    categoria: cardEl.dataset.categoria,
+    descripcion: cardEl.dataset.descripcion,
+    precio: cardEl.dataset.precio,
+    imagen: cardEl.dataset.imagen
+  };
+  localStorage.setItem('productoDetalle', JSON.stringify(product));
+  window.location.href = 'detalleproducto.html';
+}
+
+
+function filtrarCategoria(categoria){
+  const productos = document.querySelectorAll('.main .card');
+  productos.forEach(card => {
+    if(categoria === 'Todos' || card.dataset.categoria === categoria){
+      card.style.display = 'block';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+}
+</script>
+
+</body>
+</html>

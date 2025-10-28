@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Ropa, zapatos y accesorios para mujer • Vesticol Colombia</title>
+<link rel="icon" href="logo.jpg" type="image/jpg">
+<style>
+
+nav {
+  background-color: #0A0A0A;
+  overflow: hidden;
+}
+nav ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  align-items: center;
+}
+nav ul li a {
+  display: block;
+  padding: 14px 20px;
+  text-decoration: none;
+  color: white;
+}
+nav ul li a:hover { background-color: #575757; }
+nav ul li.logo { margin-right: auto; }
+nav ul li.logo img { height: 80px; margin: 5px 15px; }
+
+
+body { margin:0; font-family: Arial, sans-serif; background:#f4f4f4; }
+
+
+.wrap { display:flex; min-height:calc(100vh - 56px); }
+
+
+.sidebar { width:220px; background:#111; color:#fff; padding:20px; }
+.sidebar h3 { margin-top:0; }
+.sidebar ul { list-style:none; padding:0; margin:0; }
+.sidebar li { margin:12px 0; }
+.sidebar a { color:#fff; text-decoration:none; cursor:pointer; }
+.sidebar a:hover { text-decoration:underline; }
+
+
+.main { flex:1; padding:20px; display:grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap:20px; align-items:start; }
+
+
+.card { background:#fff; border-radius:10px; overflow:hidden; box-shadow:0 4px 10px rgba(0,0,0,0.08); text-align:center; padding-bottom:12px; }
+.card img { width:100%; height:180px; object-fit:cover; display:block; }
+.card h4 { margin:10px; font-size:16px; }
+.price { color:#0a0; font-weight:700; margin-bottom:8px; }
+.card button { background:#0A0A0A; color:#fff; border:0; padding:8px 12px; border-radius:6px; cursor:pointer; }
+.card button:hover { background:#333; }
+
+footer { background-color: #000; color: #fff; text-align: center; padding: 15px 0; font-family: Arial, sans-serif; margin-top: 40px; }
+</style>
+</head>
+<body>
+
+<nav>
+  <ul>
+    <li class="logo"><a href="/"><img src="/logo.jpg" alt="Logotipo Vesticol"></a></li>
+    <li><a href="/sesionhombre">Hombre</a></li>
+    <li><a href="/sesionmujer">Mujer</a></li>
+    <li><a href="/carrito">🛒 Carrito</a></li>
+    <li><a href="/atencionalcliente">🎧Ayuda</a></li>
+    <% if (!datos || !datos.login) { %>
+      <li><a href="/ingresar">Registrar</a></li>
+      <li><a href="/ingresar/iniciarsesion">Iniciar Sesión</a></li>
+      <% } else { %>
+      <li><a href="/perfil">Bienvenido, <%= datos.usuario %></a></li>
+      <form action="/cerrarsesion" method="POST" style="display:inline;">
+        <button type="submit" style="background:none;border:none;color:white;cursor:pointer;padding:14px 20px;font-size:16px;">Cerrar Sesión</button>
+      </form>
+      <% } %>
+  </ul>
+</nav>
+
+<header>
+  <strong>• MODA FEMENINA •</strong>
+</header>
+
+<div class="wrap">
+  <aside class="sidebar">
+    <h3>Categorías</h3>
+    <ul>
+      <li><a href="/sesionmujer/calzado">Calzado</a></li>
+      <li><a href="/sesionmujer/ropa">Ropa</a></li>
+      <li><a href="/sesionmujer/accesorios">Accesorios</a></li>
+      <li><a href="/sesionmujer/">Todos</a></li>
+    </ul>
+  </aside>
+
+  <main class="main" id="productosMain">
+    <% if (productos && productos.length > 0) { %>
+      <% productos.forEach(function(producto) { %>
+        <div class="card" data-id="<%= producto.cod_producto %>" data-nombre="<%= producto.nombre_producto %>" data-genero="<%= producto.genero_producto %>" data-categoria="<%= producto.categoria_producto %>" data-descripcion="<%= producto.descripcion_producto %>" data-precio="<%= producto.precio_producto %>" data-imagen="<%= producto.imagen_producto %>">
+          <img src="<%= producto.imagen_producto %>" alt="<%= producto.nombre_producto %>">
+          <h4><%= producto.nombre_producto %></h4>
+          <div class="price">$<%= producto.precio_producto %> COP</div>
+          <button onclick="window.location.href='/detalleproducto/<%= producto.cod_producto %>'">Ver detalles</button>
+        </div>
+      <% }); %>
+    <% } else { %>
+      <p>No hay productos disponibles en esta categoría.</p>
+    <% } %>
+  </main>
+</div>
+
+<footer>
+  <p>© 2025 Vesticol Colombia — Todos los derechos reservados.</p>
+</footer>
+
+<script>
+
+function openDetail(cardEl){
+  const product = {
+    id: cardEl.dataset.id,
+    nombre: cardEl.dataset.nombre,
+    genero: cardEl.dataset.genero,
+    categoria: cardEl.dataset.categoria,
+    descripcion: cardEl.dataset.descripcion,
+    precio: cardEl.dataset.precio,
+    imagen: cardEl.dataset.imagen
+  };
+  localStorage.setItem('productoDetalle', JSON.stringify(product));
+  window.location.href = 'detalleproducto.html';
+}
+
+
+function filtrarCategoria(categoria){
+  const productos = document.querySelectorAll('.main .card');
+  productos.forEach(card => {
+    if(categoria === 'Todos' || card.dataset.categoria === categoria){
+      card.style.display = 'block';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+}
+</script>
+
+</body>
+</html>
