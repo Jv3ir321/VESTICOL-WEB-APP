@@ -105,10 +105,45 @@ app.get("/sesionmujer/:nombre_categoria", (req,res) => {
     })
 });
 
-app.get("/carrito", (req,res) => {
-    res.render("carrito", {datos: req.session || {}});
-});
+app.get("/carrito", (req, res) => {
+    // Verificar si el usuario ha iniciado sesión
+    if (!req.session.login || !req.session.idUsuario) {
+        return res.render("carrito", { 
+            productos: [], 
+            datos: req.session || {} 
+        });
+    }
 
+    const cedula_usuario = req.session.idUsuario;
+
+    // Consulta para obtener los productos del carrito con JOIN
+    const consultaCarrito = `
+        SELECT 
+            o.codigo_orden,
+            o.detalles_orden,
+            p.cod_producto,
+            p.nombre_producto,
+            p.descripcion_producto,
+            p.precio_producto,
+            p.imagen_producto
+        FROM ORDENES o
+        INNER JOIN PRODUCTOS p ON o.cod_producto = p.cod_producto
+        WHERE o.cedula_usuario = ?
+        ORDER BY o.codigo_orden DESC
+    `;
+
+    conexion.query(consultaCarrito, [cedula_usuario], (err, resultados) => {
+        if (err) {
+            console.error('Error al obtener carrito:', err);
+            return res.status(500).send('Error al obtener el carrito');
+        }
+
+        res.render("carrito", { 
+            productos: resultados, 
+            datos: req.session || {} 
+        });
+    });
+});
 app.get("/atencionalcliente", (req,res) => {
     res.render("atencionalcliente", {datos: req.session || {}});
 });
@@ -267,8 +302,44 @@ app.post("/cerrarsesion", (req, res) => {
     });
 });
 
+app.post("/detalleproducto/:cod_producto/agregarcarrito", (req,res) => {
+    const cod_producto = req.params.cod_producto;
+    const cedula_usuario = req.session.idUsuario;
+    const talla_pedido = req.body.talla;
 
+    const añadirProductoDB = "INSERT INTO ORDENES(cedula_usuario, cod_producto, detalles_orden) VALUES (?, ?, ?)";
+    conexion.query(añadirProductoDB, [cedula_usuario, cod_producto, talla_pedido], (err, result) => {
+        if (err) {
+            console.error('Error al añadir producto a la base de datos:', err);
+                return res.status(500).send('Error al añadir producto');
+            }
 
-app.listen(4000,function(){
-    console.log("Servidor Creado en http://localhost:4000");
+            console.log('Producto añadido al carrito:', {
+                cedula_usuario,
+                cod_producto,
+                talla_pedido
+            });
+            res.redirect("/carrito");
+        });
+    });
+
+app.post("/carrito/:codigo_orden/eliminar", (req, res) => {
+    const codigo_orden = req.params.codigo_orden;
+
+    const eliminarProductoDB = "DELETE FROM ORDENES WHERE codigo_orden = ?";
+    conexion.query(eliminarProductoDB, [codigo_orden], (err, result) => {
+        if (err) {
+            console.error('Error al eliminar producto de la base de datos:', err);
+            return res.status(500).send('Error al eliminar producto');
+        }
+
+        console.log('Producto eliminado del carrito:', {
+            codigo_orden
+        });
+        res.redirect("/carrito");
+    });
+});
+
+app.listen(4500,function(){
+    console.log("Servidor Creado en http://localhost:4500");
 });

@@ -164,21 +164,27 @@
   </div>
   <div class="producto-info">
     <div>
+      <form action="/detalleproducto/<%= producto.cod_producto %>/agregarcarrito" method="post">
       <h2 id="nombreProducto"><%= producto.nombre_producto %></h2>
       <p id="descripcionProducto"><%= producto.descripcion_producto %></p>
       <p>Precio: $<span id="precioProducto"><%= producto.precio_producto %></span> COP</p>
       <p class="envio">🚚 Envío: Gratis</p>
       <div class="tallas">
         <p>Selecciona la talla:</p>
-        <button onclick="seleccionarTalla(this)">38</button>
-        <button onclick="seleccionarTalla(this)">39</button>
-        <button onclick="seleccionarTalla(this)">40</button>
-        <button onclick="seleccionarTalla(this)">41</button>
-        <button onclick="seleccionarTalla(this)">42</button>
-        <button onclick="seleccionarTalla(this)">43</button>
+        <select name="talla" id="talla">
+          <option value="38">38</option>
+          <option value="39">39</option>
+          <option value="40">40</option>
+          <option value="41">41</option>
+          <option value="42">42</option>
+          <option value="43">43</option>
+        </select>
       </div>
     </div>
+      <input type="hidden" name="id" value="<%= producto.cod_producto %>">
+      <input type="hidden" name="idusuario" id="idusuarioInput" value="<%= datos.idUsuario %>">
     <button class="btn-carrito" id="agregarCarrito">Agregar al carrito</button>
+    </form>
   </div>
 </div>
 <% } else { %>
